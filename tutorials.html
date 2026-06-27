@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Microtuff Solutions - SNI Bypass & Network Tutorials</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;background:#0a0e17;color:#e0e0e0;line-height:1.7;max-width:900px;margin:0 auto;padding:2rem}
+h1{color:#d4a843;font-size:2rem;margin-bottom:.5rem;border-bottom:2px solid rgba(212,168,67,.3);padding-bottom:.5rem}
+h2{color:#f0c75e;font-size:1.4rem;margin:2rem 0 1rem}
+h3{color:#8899cc;font-size:1.1rem;margin:1.5rem 0 .5rem}
+p{margin-bottom:1rem;color:#b0b0b0}
+code{background:rgba(212,168,67,.1);padding:.2rem .5rem;border-radius:4px;font-family:monospace;font-size:.9rem;color:#d4a843}
+pre{background:rgba(0,0,0,.4);border:1px solid rgba(212,168,67,.2);border-radius:8px;padding:1.2rem;overflow-x:auto;margin:1rem 0 1.5rem;font-family:monospace;font-size:.85rem;color:#a0c0a0}
+.tip{background:rgba(34,197,94,.08);border-left:3px solid #22c55e;padding:1rem;margin:1rem 0;border-radius:0 8px 8px 0}
+.warning{background:rgba(255,165,0,.08);border-left:3px solid #ffa500;padding:1rem;margin:1rem 0;border-radius:0 8px 8px 0}
+.s{margin-bottom:3rem}
+.src{color:#8899aa;text-align:center;font-size:.85rem;margin-top:3rem;border-top:1px solid rgba(212,168,67,.2);padding-top:2rem}
+</style>
+</head>
+<body>
+<h1>Microtuff Solutions - Network Bypass Tutorials</h1>
+<p style="color:#666">Official documentation for SNI Bypass, SSH Tunneling, WebSocket Connections, and USB-over-WAN systems.</p>
+
+<div class="s">
+<h2>Table of Contents</h2>
+<ol style="color:#8899aa;padding-left:1.5rem">
+<li><a href="#sni" style="color:#d4a843;text-decoration:none">SNI Bypass Configuration</a></li>
+<li><a href="#ssh" style="color:#d4a843;text-decoration:none">3-7 Day SSH Tunnel Setup</a></li>
+<li><a href="#ws" style="color:#d4a843;text-decoration:none">WebSocket Tunnel Configuration</a></li>
+<li><a href="#usb" style="color:#d4a843;text-decoration:none">USB-over-WAN Remote Repair Setup</a></li>
+<li><a href="#advanced" style="color:#d4a843;text-decoration:none">Advanced SNI Methods</a></li>
+</ol>
+</div>
+
+<div class="s" id="sni">
+<h2>1. SNI Bypass Configuration</h2>
+<p><strong>SNI (Server Name Indication)</strong> reveals the hostname your client connects to via TLS. ISPs use this to block specific services. SNI bypass tricks the ISP into seeing a different, whitelisted hostname while routing to your actual destination.</p>
+<h3>How It Works</h3>
+<p>Your TLS handshake sends a SNI field that ISPs inspect. By connecting through a proxy that sets the SNI to a CDN or whitelisted domain (like whatsapp.com or a Cloudflare endpoint), the ISP allows the connection while your proxy forwards to the real target.</p>
+<h3>Ready-to-Use SNI Configs</h3>
+<h4>WhatsApp Bypass</h4>
+<pre>[Header]
+GET / HTTP/1.1
+Host: web.whatsapp.com
+SNI: whatsapp.com
+Port: 443</pre>
+<h4>Instagram Bypass</h4>
+<pre>[Header]
+GET / HTTP/1.1
+Host: i.instagram.com
+SNI: instagram.com
+Port: 443</pre>
+<h4>Netflix Bypass</h4>
+<pre>[Header]
+GET / HTTP/1.1
+Host: www.netflix.com
+SNI: netflix.com
+Port: 443</pre>
+<div class="warning">Warning: Netflix uses deep packet inspection PLUS certificate pinning. SNI bypass alone may not work. Use a VPS with proper TLS termination.</div>
+<div class="tip">Tip: Works with HTTP Injector (Android), KPN Tunnel, Shadowrocket (iOS), Shadowsock, and V2Ray.</div>
+</div>
+
+<div class="s" id="ssh">
+<h2>2. 3-7 Day SSH Tunnel Setup</h2>
+<p>Create persistent SSH tunnels that auto-reconnect and last multiple days using systemd service management.</p>
+<h3>Requirements</h3>
+<ul style="color:#8899aa;padding-left:1.5rem;margin-bottom:1.5rem">
+<li>VPS with public IP (DigitalOcean $6/mo, Vultr free tier, or Oracle Always Free)</li>
+<li>OpenSSH server + stunnel or sslh for TLS wrapping</li>
+<li>HTTP Injector on Android, Shadowrocket on iOS, or OpenSSH client on desktop</li>
+</ul>
+<h3>Step 1: Generate SSH Keys</h3>
+<pre>ssh-keygen -t ed25519 -f ~/.ssh/microtuff_key -N ""
+ssh-copy-id -p 443 user@your-vps-ip</pre>
+<h3>Step 2: Create Systemd Service</h3>
+<p>File: /etc/systemd/system/ssh-tunnel.service</p>
+<pre>[Unit]
+Description=Microtuff SSH Tunnel
+After=network.target
+
+[Service]
+Type=simple
+User=tunneluser
+ExecStart=/usr/bin/ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=3 -o ExitOnForwardFailure=yes -N -R 8080:localhost:80 -p 443 user@your-vps-server.com -i /home/tunneluser/.ssh/microtuff_key
+Restart=always
+RestartSec=30
+RestartLimitBurst=10
+
+[Install]
+WantedBy=multi-user.target</pre>
+<h3>Step 3: Enable and Run</h3>
+<pre>sudo systemctl daemon-reload
+sudo systemctl enable ssh-tunnel
+sudo systemctl start ssh-tunnel
+sudo systemctl status ssh-tunnel</pre>
+<h3>Step 4: Configure Client (HTTP Injector)</h3>
+<pre>[Connection]
+Type: SSH
+Host: YOUR_VPS_IP
+Port: 443
+Username: user
+Private Key: microtuff_key
+
+[Proxy]
+Type: HTTP
+Host: 127.0.0.1
+Port: 8080
+
+[Payload]
+GET / HTTP/1.1
+Host: target-site.com
+Connection: keep-alive</pre>
+<div class="tip">Duration: With ServerAliveInterval=60, the tunnel stays alive indefinitely. The systemd RestartSec=30 auto-reconnects every 30 seconds if it drops. This easily lasts 3-7 days without intervention. For longer duration, rotate keys weekly.</div>
+</div>
+
+<div class="s" id="ws">
+<h2>3. WebSocket Tunnel Configuration</h2>
+<p>WebSocket upgrades headers carry metadata for persistent connections. The upgrade request can route traffic through encrypted tunnels while appearing as normal HTTPS.</p>
+<h3>Sample WebSocket Request</h3>
+<pre>GET / HTTP/1.1
+Host: secure-websocket.example.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Version: 13
+Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==
+Sec-WebSocket-Protocol: chat, superchat
+Origin: https://www.example.com</pre>
+<h3>Key Configuration Points</h3>
+<ul style="color:#8899aa;padding-left:1.5rem">
+<li><strong>Host</strong>: Your proxy server (the one ISPs see)</li>
+<li><strong>SNI in TLS</strong>: Can differ from the HTTP Host header</li>
+<li><strong>Origin</strong>: Proxied through — hides your actual origin</li>
+<li><strong>Sec-WebSocket-Key</strong>: Random 16-byte base64 per connection</li>
+</ul>
+<div class="tip">Works best with Shadowrocket or HTTP Injector WebSocket plugin. Set ws-host and ws-origin headers to match your target.</div>
+</div>
+
+<div class="s" id="usb">
+<h2>4. USB-over-WAN Remote Repair Setup</h2>
+<p>Allow clients to share USB devices remotely to your repair technician dashboard (Repair Connect).</p>
+<h3>Client Instructions (Zero Install)</h3>
+<ol style="color:#8899aa;padding-left:1.5rem">
+<li>Open <a href="https://kronodin.github.io/kronodin-repair/" style="color:#d4a843">Repair Connect page</a> in Chrome or Edge</li>
+<li>Enable WebUSB mode in chrome://flags (if needed)</li>
+<li>Click "Connect Device" button</li>
+<li>Plug USB device into computer</li>
+<li>Browser will detect the USB device — click "Share" to allow remote access</li>
+<li>Issuer is notified — device is now accessible to repair technician via WebUSB API</li>
+</ol>
+<h3>Supported USB Devices</h3>
+<ul style="color:#8899aa;padding-left:1.5rem">
+<li>USB flash drives and external hard drives</li>
+<li>Android phones (ADB mode / file transfer mode)</li>
+<li>iPhones (limited — requires trusted host pairing)</li>
+<li>Printers and scanners</li>
+<li>Keyboards, mice, game controllers</li>
+</ul>
+<div class="warning">Note: Client must keep browser tab open. Connection ends when they close the page. WebUSB requires HTTPS (GitHub Pages provides this automatically).</div>
+</div>
+
+<div class="s" id="advanced">
+<h2>5. Advanced SNI Bypass Methods</h2>
+<h3>ClientHello Fragmentation</h3>
+<p>Split the TLS ClientHello handshake across multiple TCP packets. DPI systems that inspect single packets cannot extract the SNI field. Implemented in tools like <code>uTLS</code> (used by utls-client) and <code>GOST</code>.</p>
+<h3>Domain Fronting</h3>
+<p>Set SNI to a high-reputation CDN domain (e.g., <code>cdn.cloudflare.com</code>) while sending a different HTTP Host header for your actual target. Works on any CDN that accepts arbitrary host headers. Cloudflare and Google Cloud CDN are known compatible.</p>
+<h3>ECH (Encrypted Client Hello)</h3>
+<p>TLS 1.3 extension that encrypts the entire ClientHello including SNI. The ISP sees only encrypted bytes where the hostname should be. Native support in Firefox (network.dns.echcfg) and Chrome (Encrypted ClientHello). This is the future of SNI privacy.</p>
+<h3>H3 QUIC Protocol</h3>
+<p>HTTP/3 uses QUIC protocol over UDP 443 instead of TCP 443. Most DPI systems only inspect TCP traffic. Switching to QUIC-based connections bypasses the TCP TLS inspection entirely. Use with <code>curl --http3</code> or <code>v2ray VLESS+QUIC</code>.</p>
+<h3>Session Resumption</h3>
+<p>TLS session tickets allow reconnection without a full handshake — including skipping the SNI exchange. Enable server-side: <code>ssl_session_tickets on;</code> (Nginx) and client-side session caching. Tools like <code>ss-local</code> support session ticket reuse.</p>
+<h3>Multi-SNI Rotation</h3>
+<p>Rotate through dozens of SNI domains in rapid succession. Even if one SNI triggers a block, the next connection uses a different one. Effective against reactive DPI systems that block specific SNIs after detection.</p>
+<div class="tip">Combine methods for maximum bypass capability: SNI bypass + WebSocket upgrade + ECH encryption + QUIC transport = full-spectrum network bypass.</div>
+</div>
+
+<div class="src">
+<p>Microtuff Solutions R&D — Network Security Research & Documentation<br>
+Contact: <a href="mailto:mrmicrotuff@microtuffsolutions.com" style="color:#d4a843">mrmicrotuff@microtuffsolutions.com</a> | 1 (876) 803-6062<br>
+CEO: Kronodin | Established 2024 | Island Wide Jamaica</p>
+</div>
+</body>
+</html>
