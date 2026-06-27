@@ -4,7 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SNI Bypass Config Generator | Microtuff Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-card: #151c2c;
+            --bg-card-hover: #1a2438;
+            --gold: #d4a843;
+            --gold-light: #e8c368;
+            --gold-dark: #b8922e;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border: #1e293b;
+            --border-light: #2a3a4a;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gradient-gold: linear-gradient(135deg, #d4a843 0%, #b8922e 100%);
+            --gradient-card: linear-gradient(145deg, #151c2c 0%, #111827 100%);
+            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 12px 40px rgba(212, 168, 67, 0.15);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,114 +35,333 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0a0e17;
-            color: #e0e0e0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
+        /* Fixed Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 14, 23, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
         }
 
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            border-bottom: 2px solid #d4a843;
-            margin-bottom: 40px;
-        }
-
-        .logo {
-            font-size: 2.5rem;
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.4rem;
             font-weight: 700;
-            color: #d4a843;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
-        }
-
-        .logo span {
-            color: #ffffff;
-        }
-
-        .tagline {
-            font-size: 0.95rem;
-            color: #8899aa;
+            color: var(--gold);
+            text-decoration: none;
             letter-spacing: 1px;
-            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .page-title {
+        .nav-logo span {
+            color: var(--text-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: var(--gradient-gold);
+            color: var(--bg-primary) !important;
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600 !important;
+        }
+
+        .nav-cta::after {
+            display: none !important;
+        }
+
+        .nav-cta:hover {
+            opacity: 0.9;
+            color: var(--bg-primary) !important;
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 400px;
+            background: radial-gradient(ellipse, rgba(212, 168, 67, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(212, 168, 67, 0.1);
+            border: 1px solid rgba(212, 168, 67, 0.25);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: var(--gold);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            animation: fadeInUp 0.6s ease 0.1s both;
+        }
+
+        .hero h1 .gold {
+            color: var(--gold);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            animation: fadeInUp 0.6s ease 0.2s both;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+            animation: fadeInUp 0.6s ease 0.3s both;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 1.8rem;
-            color: #ffffff;
-            margin-bottom: 10px;
-            text-align: center;
+            font-weight: 700;
+            color: var(--gold);
         }
 
-        .page-subtitle {
-            text-align: center;
-            color: #8899aa;
-            margin-bottom: 30px;
-            font-size: 1rem;
+        .hero-stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Main Content */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Cards */
         .card {
-            background: linear-gradient(135deg, #0f1420 0%, #141c2b 100%);
-            border: 1px solid #1e2a3a;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            background: var(--gradient-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-card);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover {
+            border-color: rgba(212, 168, 67, 0.3);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(212, 168, 67, 0.1);
+            border: 1px solid rgba(212, 168, 67, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
         }
 
         .card-title {
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 1.2rem;
-            color: #d4a843;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #1e2a3a;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-weight: 600;
+            color: var(--text-primary);
         }
 
-        .card-title::before {
-            content: '';
-            width: 4px;
-            height: 20px;
-            background: #d4a843;
-            border-radius: 2px;
+        .card-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
         }
 
+        /* Form Elements */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
 
         label {
             display: block;
-            font-size: 0.9rem;
-            color: #aabbcc;
-            margin-bottom: 8px;
+            font-size: 0.85rem;
             font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3px;
         }
 
-        select, input[type="text"], input[type="number"] {
+        select, input[type="text"], input[type="number"], input[type="password"] {
             width: 100%;
-            padding: 12px 16px;
-            background: #0a0e17;
-            border: 1px solid #2a3a4a;
-            border-radius: 8px;
-            color: #ffffff;
-            font-size: 1rem;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            padding: 0.75rem 1rem;
+            background: rgba(10, 14, 23, 0.8);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
         }
 
-        select:focus, input[type="text"]:focus, input[type="number"]:focus {
+        select:focus, input:focus {
             outline: none;
-            border-color: #d4a843;
-            box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.15);
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.12);
         }
 
         select {
@@ -127,57 +369,42 @@
             appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23d4a843' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 16px center;
-            padding-right: 40px;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
         }
 
-        .row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+        select option {
+            background: var(--bg-card);
+            color: var(--text-primary);
         }
 
-        @media (max-width: 600px) {
-            .row {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .custom-fields {
-            display: none;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #1e2a3a;
-        }
-
-        .custom-fields.active {
-            display: block;
-        }
-
+        /* Buttons */
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            padding: 14px 32px;
-            font-size: 1rem;
+            gap: 0.5rem;
+            padding: 0.85rem 2rem;
+            font-size: 0.95rem;
             font-weight: 600;
+            font-family: 'Inter', sans-serif;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             text-decoration: none;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #d4a843 0%, #b8922e 100%);
-            color: #0a0e17;
+            background: var(--gradient-gold);
+            color: var(--bg-primary);
             width: 100%;
+            box-shadow: 0 4px 15px rgba(212, 168, 67, 0.25);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(212, 168, 67, 0.3);
+            box-shadow: 0 8px 25px rgba(212, 168, 67, 0.35);
         }
 
         .btn-primary:active {
@@ -185,146 +412,418 @@
         }
 
         .btn-secondary {
-            background: transparent;
-            color: #d4a843;
-            border: 1px solid #d4a843;
+            background: rgba(212, 168, 67, 0.1);
+            color: var(--gold);
+            border: 1px solid rgba(212, 168, 67, 0.3);
         }
 
         .btn-secondary:hover {
-            background: rgba(212, 168, 67, 0.1);
+            background: rgba(212, 168, 67, 0.15);
+            border-color: var(--gold);
         }
 
-        .btn-download {
-            background: linear-gradient(135deg, #1a8a5a 0%, #0d6b42 100%);
+        .btn-success {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
             color: #ffffff;
             width: 100%;
             display: none;
         }
 
-        .btn-download:hover {
+        .btn-success:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(26, 138, 90, 0.3);
+            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.3);
         }
 
-        .btn-download.visible {
+        .btn-success.visible {
             display: inline-flex;
         }
 
-        .payload-preview {
-            background: #060a12;
-            border: 1px solid #1e2a3a;
-            border-radius: 8px;
-            padding: 16px;
-            margin-top: 15px;
-            font-family: 'Courier New', monospace;
+        .btn-copy {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            padding: 0.6rem 1.2rem;
             font-size: 0.85rem;
+        }
+
+        .btn-copy:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+            border-color: var(--border-light);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        /* Output Section */
+        .output-section {
+            margin-top: 1.5rem;
+        }
+
+        .output-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .output-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .output-code {
+            background: rgba(6, 10, 18, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+            font-size: 0.82rem;
             color: #7acc9a;
             white-space: pre-wrap;
             word-break: break-all;
+            line-height: 1.7;
             display: none;
+            max-height: 300px;
+            overflow-y: auto;
         }
 
-        .payload-preview.visible {
+        .output-code.visible {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .output-code::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .output-code::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+            border-radius: 3px;
+        }
+
+        .output-code::-webkit-scrollbar-thumb {
+            background: var(--border-light);
+            border-radius: 3px;
+        }
+
+        /* Custom Fields Toggle */
+        .custom-fields {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            animation: slideDown 0.3s ease;
+        }
+
+        .custom-fields.active {
             display: block;
         }
 
-        .info-box {
-            background: rgba(212, 168, 67, 0.08);
-            border: 1px solid rgba(212, 168, 67, 0.25);
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .info-box h3 {
-            color: #d4a843;
-            font-size: 1rem;
-            margin-bottom: 12px;
-        }
-
-        .info-box ol, .info-box ul {
-            padding-left: 20px;
-            margin-bottom: 10px;
-        }
-
-        .info-box li {
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            color: #c0c8d0;
-        }
-
-        .info-box code {
-            background: #0a0e17;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            color: #d4a843;
-            font-size: 0.85rem;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .badge-flow {
-            background: rgba(0, 150, 255, 0.15);
-            color: #4db8ff;
-            border: 1px solid rgba(0, 150, 255, 0.3);
-        }
-
-        .badge-digicel {
-            background: rgba(255, 50, 50, 0.15);
-            color: #ff6b6b;
-            border: 1px solid rgba(255, 50, 50, 0.3);
-        }
-
+        /* Carrier Info Badge */
         .carrier-info {
-            margin-top: 10px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 6px;
+            margin-top: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: rgba(212, 168, 67, 0.05);
+            border: 1px solid rgba(212, 168, 67, 0.15);
+            border-radius: 8px;
             font-size: 0.85rem;
-            color: #8899aa;
+            color: var(--text-secondary);
             display: none;
+            animation: fadeIn 0.3s ease;
         }
 
         .carrier-info.active {
             display: block;
         }
 
-        footer {
-            text-align: center;
-            padding: 30px 20px;
-            border-top: 1px solid #1e2a3a;
-            margin-top: 40px;
-            color: #556677;
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge-flow {
+            background: rgba(0, 150, 255, 0.12);
+            color: #4db8ff;
+            border: 1px solid rgba(0, 150, 255, 0.25);
+        }
+
+        .badge-digicel {
+            background: rgba(255, 50, 50, 0.12);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 50, 50, 0.25);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 80px;
+        }
+
+        .saved-configs {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .saved-configs::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .saved-configs::-webkit-scrollbar-thumb {
+            background: var(--border-light);
+            border-radius: 2px;
+        }
+
+        .saved-config-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
             font-size: 0.85rem;
+            transition: all 0.2s;
         }
 
-        footer a {
-            color: #d4a843;
+        .saved-config-item:hover {
+            background: rgba(212, 168, 67, 0.05);
+            border-color: rgba(212, 168, 67, 0.2);
+        }
+
+        .saved-config-name {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .saved-config-date {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .empty-state-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.5;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(212, 168, 67, 0.05);
+            border: 1px solid rgba(212, 168, 67, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .info-box h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--gold);
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .info-box ol, .info-box ul {
+            padding-left: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-box li {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .info-box code {
+            background: rgba(10, 14, 23, 0.8);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gold);
+            font-size: 0.82rem;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: 4rem 2rem;
+            background: linear-gradient(180deg, transparent, rgba(212, 168, 67, 0.02), transparent);
+        }
+
+        .how-it-works-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .step-card {
+            background: var(--gradient-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(212, 168, 67, 0.3);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-gold);
+            color: var(--bg-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+
+        .step-card h3 {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-card p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+            background: rgba(10, 14, 23, 0.8);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-logo span {
+            color: var(--text-primary);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
             text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
         }
 
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+
+        .footer-copyright {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        /* Toast */
         .toast {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #1a8a5a;
-            color: #ffffff;
-            padding: 14px 24px;
-            border-radius: 8px;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--success);
+            color: var(--text-primary);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
             font-size: 0.9rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            font-weight: 500;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
             transform: translateY(100px);
             opacity: 0;
-            transition: all 0.4s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .toast.visible {
@@ -332,160 +831,419 @@
             opacity: 1;
         }
 
-        .divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #2a3a4a, transparent);
-            margin: 30px 0;
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 64px;
+                left: 0;
+                right: 0;
+                background: rgba(10, 14, 23, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 1rem 2rem;
+                gap: 1rem;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .hero {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+            }
+
+            .hero-stat-value {
+                font-size: 1.4rem;
+            }
+
+            .main {
+                padding: 0 1rem 3rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .how-it-works {
+                padding: 3rem 1.5rem;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
-        .highlight {
-            color: #d4a843;
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">MICRO<span>TUFF</span></div>
-            <div class="tagline">Solutions — Connectivity Tools for the Caribbean</div>
-        </header>
+    <!-- Fixed Navigation -->
+    <nav class="nav">
+        <a href="#" class="nav-logo">MICRO<span>TUFF</span></a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#generator">Generator</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#tutorials">Tutorials</a></li>
+            <li><a href="tutorials.html">Docs</a></li>
+            <li><a href="#generator" class="nav-cta">Get Started</a></li>
+        </ul>
+        <button class="mobile-toggle" onclick="toggleNav()" aria-label="Toggle navigation">☰</button>
+    </nav>
 
-        <h1 class="page-title">SNI Bypass Config Generator</h1>
-        <p class="page-subtitle">Generate HTTP Injector .ehi configuration files for Jamaican carriers</p>
-
-        <div class="card">
-            <div class="card-title">Configuration</div>
-            
-            <div class="form-group">
-                <label for="carrier">Carrier</label>
-                <select id="carrier" onchange="updateCarrierInfo()">
-                    <option value="">— Select Carrier —</option>
-                    <option value="flow">Flow Jamaica</option>
-                    <option value="digicel">Digicel Jamaica</option>
-                </select>
-                <div id="carrier-info" class="carrier-info"></div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">
+            <span>🔒</span> SNI Bypass Tool — Caribbean Networks
+        </div>
+        <h1>Generate <span class="gold">SNI Bypass</span> Configs Instantly</h1>
+        <p>Create HTTP Injector configuration files for Jamaican carriers. SNI tunneling made simple — no technical knowledge required.</p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-value">2</div>
+                <div class="hero-stat-label">Carriers</div>
             </div>
-
-            <div class="row">
-                <div class="form-group">
-                    <label for="target-host">Target Host</label>
-                    <select id="target-host" onchange="updateTargetCustom()">
-                        <option value="">— Select Target —</option>
-                        <option value="moh">Ministry of Health (moh.gov.jm)</option>
-                        <option value="mof">Ministry of Finance (mof.gov.jm)</option>
-                        <option value="utech">UTECH Jamaica (utech.edu.jm)</option>
-                        <option value="custom">Custom Host...</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="bug-host">Bug Host (SNI)</label>
-                    <select id="bug-host" onchange="updateBugCustom()">
-                        <option value="">— Select Bug Host —</option>
-                        <option value="dredgeflow">dredgeflow.com (Default)</option>
-                        <option value="custom">Custom Bug Host...</option>
-                    </select>
-                </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">4+</div>
+                <div class="hero-stat-label">Target Hosts</div>
             </div>
-
-            <div id="custom-target-fields" class="custom-fields">
-                <div class="row">
-                    <div class="form-group">
-                        <label for="custom-target-host">Custom Target Host</label>
-                        <input type="text" id="custom-target-host" placeholder="e.g., www.example.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="custom-target-ip">Target IP Address</label>
-                        <input type="text" id="custom-target-ip" placeholder="e.g., 104.24.103.82">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label for="custom-target-port">Port</label>
-                        <input type="number" id="custom-target-port" value="443" placeholder="443">
-                    </div>
-                    <div class="form-group">
-                        <label for="custom-target-sni">SNI Name</label>
-                        <input type="text" id="custom-target-sni" placeholder="e.g., www.example.com">
-                    </div>
-                </div>
-            </div>
-
-            <div id="custom-bug-fields" class="custom-fields">
-                <div class="row">
-                    <div class="form-group">
-                        <label for="custom-bug-host">Custom Bug Host</label>
-                        <input type="text" id="custom-bug-host" placeholder="e.g., example.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="custom-bug-ip">Bug IP Address</label>
-                        <input type="text" id="custom-bug-ip" placeholder="e.g., 162.159.135.42">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label for="custom-bug-port">Bug Port</label>
-                        <input type="number" id="custom-bug-port" value="443" placeholder="443">
-                    </div>
-                    <div class="form-group">
-                        <label for="custom-bug-sni">Bug SNI</label>
-                        <input type="text" id="custom-bug-sni" placeholder="e.g., example.com">
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="config-name">Config Name (optional)</label>
-                <input type="text" id="config-name" placeholder="e.g., Flow_MOH_Bypass">
+            <div class="hero-stat">
+                <div class="hero-stat-value">.ehi</div>
+                <div class="hero-stat-label">Format</div>
             </div>
         </div>
+    </section>
 
-        <div class="card">
-            <div class="card-title">Payload Preview</div>
-            <div id="payload-preview" class="payload-preview"></div>
-            <div style="text-align: center; margin-top: 20px;">
-                <button class="btn btn-primary" onclick="generateConfig()">
-                    ⚡ Generate .ehi Config
-                </button>
+    <!-- Main Content -->
+    <main class="main" id="generator">
+        <div class="grid">
+            <!-- Left Column - Form -->
+            <div class="form-column">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">⚙️</div>
+                        <div>
+                            <div class="card-title">Configuration</div>
+                            <div class="card-subtitle">Set up your SNI bypass parameters</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="carrier">Network Carrier</label>
+                        <select id="carrier" onchange="updateCarrierInfo()">
+                            <option value="">— Select Carrier —</option>
+                            <option value="flow">Flow Jamaica</option>
+                            <option value="digicel">Digicel Jamaica</option>
+                        </select>
+                        <div id="carrier-info" class="carrier-info"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="target-host">Target Host</label>
+                            <select id="target-host" onchange="updateTargetCustom()">
+                                <option value="">— Select Target —</option>
+                                <option value="moh">Ministry of Health (moh.gov.jm)</option>
+                                <option value="mof">Ministry of Finance (mof.gov.jm)</option>
+                                <option value="utech">UTECH Jamaica (utech.edu.jm)</option>
+                                <option value="custom">Custom Host...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bug-host">Bug Host (SNI)</label>
+                            <select id="bug-host" onchange="updateBugCustom()">
+                                <option value="">— Select Bug Host —</option>
+                                <option value="dredgeflow">dredgeflow.com (Default)</option>
+                                <option value="custom">Custom Bug Host...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="custom-target-fields" class="custom-fields">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="custom-target-host">Custom Target Host</label>
+                                <input type="text" id="custom-target-host" placeholder="e.g., www.example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="custom-target-ip">Target IP Address</label>
+                                <input type="text" id="custom-target-ip" placeholder="e.g., 104.24.103.82">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="custom-target-port">Port</label>
+                                <input type="number" id="custom-target-port" value="443" placeholder="443">
+                            </div>
+                            <div class="form-group">
+                                <label for="custom-target-sni">SNI Name</label>
+                                <input type="text" id="custom-target-sni" placeholder="e.g., www.example.com">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="custom-bug-fields" class="custom-fields">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="custom-bug-host">Custom Bug Host</label>
+                                <input type="text" id="custom-bug-host" placeholder="e.g., example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="custom-bug-ip">Bug IP Address</label>
+                                <input type="text" id="custom-bug-ip" placeholder="e.g., 162.159.135.42">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="custom-bug-port">Bug Port</label>
+                                <input type="number" id="custom-bug-port" value="443" placeholder="443">
+                            </div>
+                            <div class="form-group">
+                                <label for="custom-bug-sni">Bug SNI</label>
+                                <input type="text" id="custom-bug-sni" placeholder="e.g., example.com">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="config-name">Config Name (optional)</label>
+                        <input type="text" id="config-name" placeholder="e.g., Flow_MOH_Bypass">
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">📄</div>
+                        <div>
+                            <div class="card-title">Generated Config Output</div>
+                            <div class="card-subtitle">Your .ehi configuration file</div>
+                        </div>
+                    </div>
+
+                    <div class="output-section">
+                        <div class="output-header">
+                            <span class="output-label">HTTP Injector Config</span>
+                        </div>
+                        <div id="payload-preview" class="output-code"></div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 1.5rem;">
+                        <button class="btn btn-primary" onclick="generateConfig()">
+                            ⚡ Generate .ehi Config
+                        </button>
+                    </div>
+
+                    <div class="btn-group">
+                        <button id="download-btn" class="btn btn-success" onclick="downloadConfig()">
+                            📥 Download .ehi File
+                        </button>
+                        <button id="copy-btn" class="btn btn-copy" onclick="copyConfig()" style="display: none;">
+                            📋 Copy to Clipboard
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Installation Instructions -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">📖</div>
+                        <div>
+                            <div class="card-title">Installation Instructions</div>
+                            <div class="card-subtitle">HTTP Injector setup guide</div>
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <h3>How to Import .ehi Config Files</h3>
+                        <ol>
+                            <li>Download and install <strong>HTTP Injector</strong> from the Google Play Store or a trusted APK source.</li>
+                            <li>Open HTTP Injector on your device.</li>
+                            <li>Tap the <strong>Menu</strong> (three dots) in the top-right corner.</li>
+                            <li>Select <strong>Import Config</strong> or <strong>Settings → Config → Import</strong>.</li>
+                            <li>Navigate to your Downloads folder and select the <code>.ehi</code> file.</li>
+                            <li>The config will appear in your config list. Tap it to activate.</li>
+                            <li>Press <strong>Start</strong> to establish the VPN connection.</li>
+                        </ol>
+                        <h3 style="margin-top: 1rem;">Troubleshooting Tips</h3>
+                        <ul>
+                            <li>Ensure your mobile data is connected (WiFi may block VPN tunnels).</li>
+                            <li>If connection fails, try toggling airplane mode or switching between Flow/Digicel APN.</li>
+                            <li>Some configs may require specific APN settings — check carrier recommendations.</li>
+                            <li>HTTP Injector requires Android 4.1+ or a compatible Android device.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div style="text-align: center; margin-top: 15px;">
-                <button id="download-btn" class="btn btn-download" onclick="downloadConfig()">
-                    📥 Download .ehi File
-                </button>
+
+            <!-- Right Column - Sidebar -->
+            <div class="sidebar">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">💾</div>
+                        <div>
+                            <div class="card-title">Your Saved Configs</div>
+                            <div class="card-subtitle">Locally stored configurations</div>
+                        </div>
+                    </div>
+                    <div class="saved-configs" id="saved-configs">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📁</div>
+                            <p>No saved configs yet.<br>Generate and save a config to see it here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">💡</div>
+                        <div>
+                            <div class="card-title">Quick Tips</div>
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <ul style="margin-bottom: 0;">
+                            <li>SNI bypass works by changing the visible hostname during TLS handshake.</li>
+                            <li>Use Flow's "internet" APN for best results.</li>
+                            <li>WebSocket upgrade headers help bypass deep packet inspection.</li>
+                            <li>Configs expire — regenerate if connection stops working.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
+    </main>
 
-        <div class="divider"></div>
-
-        <div class="card">
-            <div class="card-title">Installation Instructions — HTTP Injector</div>
-            <div class="info-box">
-                <h3>How to Import .ehi Config Files</h3>
-                <ol>
-                    <li>Download and install <strong>HTTP Injector</strong> from the Google Play Store or a trusted APK source.</li>
-                    <li>Open HTTP Injector on your device.</li>
-                    <li>Tap the <strong>Menu</strong> (three dots) in the top-right corner.</li>
-                    <li>Select <strong>Import Config</strong> or <strong>Settings → Config → Import</strong>.</li>
-                    <li>Navigate to your Downloads folder and select the <code>.ehi</code> file.</li>
-                    <li>The config will appear in your config list. Tap it to activate.</li>
-                    <li>Press <strong>Start</strong> to establish the VPN connection.</li>
-                </ol>
-                <h3 style="margin-top: 15px;">Troubleshooting Tips</h3>
-                <ul>
-                    <li>Ensure your mobile data is connected (WiFi may block VPN tunnels).</li>
-                    <li>If connection fails, try toggling airplane mode or switching between Flow/Digicel APN.</li>
-                    <li>Some configs may require specific APN settings — check carrier recommendations.</li>
-                    <li>HTTP Injector requires Android 4.1+ or a compatible Android device.</li>
-                </ul>
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="how-it-works-container">
+            <div class="section-header">
+                <h2>How <span class="gold">SNI Bypass</span> Works</h2>
+                <p>Understanding the technology behind network tunneling</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>TLS Handshake</h3>
+                    <p>Your client initiates a TLS connection, sending the Server Name Indication (SNI) in plaintext.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>SNI Inspection</h3>
+                    <p>ISPs inspect the SNI field to identify and block access to specific websites or services.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>SNI Spoofing</h3>
+                    <p>We set the SNI to a whitelisted domain while routing traffic to the actual target through a proxy.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>Connection Established</h3>
+                    <p>The ISP sees an allowed domain while your traffic reaches the intended destination securely.</p>
+                </div>
             </div>
         </div>
+    </section>
 
-        <footer>
-            <p>&copy; 2026 <a href="#">Microtuff Solutions</a> — All rights reserved.</p>
-            <p style="margin-top: 5px;">SNI Bypass Tools for the Caribbean Region</p>
-        </footer>
-    </div>
+    <!-- Tutorials Section -->
+    <section id="tutorials" style="padding: 4rem 2rem; max-width: 1200px; margin: 0 auto;">
+        <div class="section-header">
+            <h2>Setup <span class="gold">Tutorials</span> & Advanced Configs</h2>
+            <p>Step-by-step guides for SSH tunnels, WebSocket connections, and ready-to-use SNI configurations</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem;">
+            <div class="card" style="margin-bottom: 0;">
+                <div class="card-header">
+                    <div class="card-icon">🔐</div>
+                    <div class="card-title">3-7 Day SSH Tunnel</div>
+                </div>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Create persistent SSH tunnels with auto-reconnect via systemd. Rotate keys for extended duration.</p>
+                <div style="background: rgba(0,0,0,0.4); padding: 0.75rem; border-radius: 8px; font-family: monospace; font-size: 0.8rem; color: #a0c0a0; margin-bottom: 1rem; overflow-x: auto;">
+                    ssh -o ServerAliveInterval=60 -R 8080:localhost:80 user@ssh-server.com -p 443 -N -f
+                </div>
+                <a href="tutorials.html#ssh" class="btn btn-secondary" style="width: 100%;">Full Guide →</a>
+            </div>
+            <div class="card" style="margin-bottom: 0;">
+                <div class="card-header">
+                    <div class="card-icon">🌐</div>
+                    <div class="card-title">WebSocket Tunnel</div>
+                </div>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Upgrade HTTP to persistent WebSocket streams. Bypass DPI inspection with encrypted upgrade headers.</p>
+                <div style="background: rgba(0,0,0,0.4); padding: 0.75rem; border-radius: 8px; font-family: monospace; font-size: 0.8rem; color: #a0c0a0; margin-bottom: 1rem; overflow-x: auto;">
+                    GET / HTTP/1.1[crlf]Upgrade: websocket[crlf]Connection: Upgrade
+                </div>
+                <a href="tutorials.html#ws" class="btn btn-secondary" style="width: 100%;">Full Guide →</a>
+            </div>
+            <div class="card" style="margin-bottom: 0;">
+                <div class="card-header">
+                    <div class="card-icon">🔄</div>
+                    <div class="card-title">Advanced SNI Methods</div>
+                </div>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">ClientHello fragmentation, ECH, H3 QUIC, domain fronting, session rotation — the full arsenal.</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem;">
+                    <span style="background: rgba(212, 168, 67, 0.12); color: var(--gold); padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.75rem;">ECH</span>
+                    <span style="background: rgba(212, 168, 67, 0.12); color: var(--gold); padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.75rem;">QUIC</span>
+                    <span style="background: rgba(212, 168, 67, 0.12); color: var(--gold); padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.75rem;">Fragmentation</span>
+                    <span style="background: rgba(212, 168, 67, 0.12); color: var(--gold); padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.75rem;">Domain Fronting</span>
+                </div>
+                <a href="tutorials.html#advanced" class="btn btn-secondary" style="width: 100%;">View All Methods →</a>
+            </div>
+            <div class="card" style="margin-bottom: 0;">
+                <div class="card-header">
+                    <div class="card-icon">📱</div>
+                    <div class="card-title">Ready-to-Use SNI Configs</div>
+                </div>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Copy-paste HTTP Injector configs. Works on Android & iOS.</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem;">
+                    <span style="background: rgba(212, 168, 67, 0.12); color: var(--gold); padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.75rem;">WhatsApp SNI</span>
+                    <span style="background: rgba(212, 168, 67, 0.12); color: var(--gold); padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.75rem;">Instagram SNI</span>
+                    <span style="background: rgba(212, 168, 67, 0.12); color: var(--gold); padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.75rem;">Netflix SNI</span>
+                    <span style="background: rgba(212, 168, 67, 0.12); color: var(--gold); padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.75rem;">Custom SSH</span>
+                </div>
+                <a href="tutorials.html#sni" class="btn btn-secondary" style="width: 100%;">View Configs →</a>
+            </div>
+        </div>
+    </section>
 
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">MICRO<span>TUFF</span></div>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Solutions — Connectivity Tools for the Caribbean</p>
+            <div class="footer-links">
+                <a href="#generator">Generator</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#tutorials">Tutorials</a>
+                <a href="tutorials.html">Documentation</a>
+                <a href="#">Contact</a>
+            </div>
+            <p class="footer-copyright">© 2026 Microtuff Solutions — All rights reserved. | Established 2024 | Island Wide Jamaica</p>
+        </div>
+    </footer>
+
+    <!-- Toast -->
     <div id="toast" class="toast"></div>
 
     <script>
@@ -541,6 +1299,10 @@
 
         let generatedPayload = '';
         let generatedFilename = '';
+
+        function toggleNav() {
+            document.getElementById('nav-links').classList.toggle('active');
+        }
 
         function updateCarrierInfo() {
             const carrier = document.getElementById('carrier').value;
@@ -612,25 +1374,6 @@
             }
             
             return BUG_HOSTS[bug] || null;
-        }
-
-        function generatePayload(target, bug, carrier) {
-            // .ehi format: HTTP Injector config
-            // Format: GET / HTTP/1.1[crlf]Host: TARGET[crlf]Upgrade: websocket[crlf]Connection: Upgrade[crlf][crlf]
-            // With SNI/bug host routing
-            
-            const crlf = '\r\n';
-            const carrierInfo = CARRIERS[carrier];
-            
-            let payload = `GET / HTTP/1.1${crlf}`;
-            payload += `Host: ${target.host}${crlf}`;
-            payload += `Upgrade: websocket${crlf}`;
-            payload += `Connection: Upgrade${crlf}`;
-            payload += `X-Online-Host: ${target.host}${crlf}`;
-            payload += `X-Forward-For: ${bug.ip}${crlf}`;
-            payload += `${crlf}`;
-            
-            return payload;
         }
 
         function generateFullConfig(target, bug, carrier) {
@@ -722,12 +1465,16 @@
             generatedPayload = generateFullConfig(target, bug, carrier);
             
             document.getElementById('download-btn').classList.add('visible');
+            document.getElementById('copy-btn').style.display = 'inline-flex';
             showToast('✅ Config generated successfully!');
             
             // Update preview
             const preview = document.getElementById('payload-preview');
             preview.textContent = generatedPayload;
             preview.classList.add('visible');
+
+            // Save to local storage
+            saveConfig(configName, generatedPayload);
         }
 
         function downloadConfig() {
@@ -749,6 +1496,72 @@
             showToast(`📥 Downloaded: ${generatedFilename}`);
         }
 
+        function copyConfig() {
+            if (!generatedPayload) {
+                showToast('⚠️ Generate a config first');
+                return;
+            }
+            
+            navigator.clipboard.writeText(generatedPayload).then(() => {
+                showToast('📋 Config copied to clipboard!');
+            }).catch(() => {
+                showToast('❌ Failed to copy');
+            });
+        }
+
+        function saveConfig(name, payload) {
+            let saved = JSON.parse(localStorage.getItem('microtuff_configs') || '[]');
+            saved.unshift({
+                name: name,
+                date: new Date().toLocaleDateString(),
+                payload: payload
+            });
+            if (saved.length > 10) saved.pop();
+            localStorage.setItem('microtuff_configs', JSON.stringify(saved));
+            renderSavedConfigs();
+        }
+
+        function renderSavedConfigs() {
+            const saved = JSON.parse(localStorage.getItem('microtuff_configs') || '[]');
+            const container = document.getElementById('saved-configs');
+            
+            if (saved.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📁</div>
+                        <p>No saved configs yet.<br>Generate and save a config to see it here.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = saved.map((config, i) => `
+                <div class="saved-config-item" onclick="loadConfig(${i})" style="cursor: pointer;">
+                    <div>
+                        <div class="saved-config-name">${config.name}</div>
+                        <div class="saved-config-date">${config.date}</div>
+                    </div>
+                    <span style="color: var(--gold); font-size: 0.8rem;">Load</span>
+                </div>
+            `).join('');
+        }
+
+        function loadConfig(index) {
+            const saved = JSON.parse(localStorage.getItem('microtuff_configs') || '[]');
+            if (saved[index]) {
+                generatedPayload = saved[index].payload;
+                generatedFilename = saved[index].name + '.ehi';
+                
+                const preview = document.getElementById('payload-preview');
+                preview.textContent = generatedPayload;
+                preview.classList.add('visible');
+                
+                document.getElementById('download-btn').classList.add('visible');
+                document.getElementById('copy-btn').style.display = 'inline-flex';
+                showToast('✅ Config loaded!');
+            }
+        }
+
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -768,79 +1581,22 @@
          'custom-bug-host', 'custom-bug-ip', 'custom-bug-port', 'custom-bug-sni'].forEach(id => {
             document.getElementById(id).addEventListener('input', updatePreview);
         });
-    </script>
 
-    <!-- TUTORIAL SECTION -->
-    <section id="tutorials" style="padding:5rem 2rem;background:linear-gradient(180deg,transparent,rgba(212,168,67,0.03),transparent)">
-      <div style="max-width:1200px;margin:0 auto">
-        <h1 style="font-size:2.5rem;color:#d4a843;text-align:center;margin-bottom:1remfont-weight:700">� Setup Tutorials &amp; Advanced SNI Configs</h1>
-        <p style="text-align:center;color:#8899aa;font-size:1.1rem;margin-bottom:3rem">Step-by-step guides for SSH tunnels, WebSocket connections, domain fronting, and ready-to-use SNI configurations.</p>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:2rem">
-          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(212,168,67,0.2);border-radius:16px;padding:2rem;transition:all .3s" onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 20px 50px rgba(0,0,0,.4)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
-            <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#d4a843,#f0c75e,#d4a843);border-radius:16px 16px 0 0"></div>
-            <h2 style="font-size:1.4rem;color:#d4a843;margin-bottom:1rem">🔐 3-7 Day SSH Tunnel</h2>
-            <p style="color:#8899aa;font-size:.95rem;line-height:1.7;margin-bottom:1.5rem">Create persistent SSH tunnels with auto-reconnect. Rotate keys for extended duration.</p>
-            <div style="background:rgba(0,0,0,.4);padding:1rem;border-radius:8px;font-family:monospace;font-size:.85rem;color:#a0c0a0;margin-bottom:1.5rem;overflow-x:auto">ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=3 -R 8080:localhost:80 user@ssh-server.com -p 443 -N -f</div>
-            <a href="#ssh" onclick="showTutorial(event,'ssh')" style="display:inline-flex;align-items:center;gap:.5rem;color:#d4a843;background:rgba(212,168,67,.1);padding:.7rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:600">Full Guide →</a>
-          </div>
-          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(212,168,67,0.2);border-radius:16px;padding:2rem;transition:all .3s" onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 20px 50px rgba(0,0,0,.4)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
-            <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#d4a843,#f0c75e,#d4a843);border-radius:16px 16px 0 0"></div>
-            <h2 style="font-size:1.4rem;color:#d4a843;margin-bottom:1rem">🌐 WebSocket Tunnel</h2>
-            <p style="color:#8899aa;font-size:.95rem;line-height:1.7;margin-bottom:1.5rem">Upgrade HTTP to persistent WebSocket streams. Bypass DPI inspection with encrypted upgrade headers.</p>
-            <div style="background:rgba(0,0,0,.4);padding:1rem;border-radius:8px;font-family:monospace;font-size:.85rem;color:#a0c0a0;margin-bottom:1.5rem;overflow-x:auto">GET / HTTP/1.1[crlf]Host: target.com[crlf]Upgrade: websocket[crlf]Connection: Upgrade[crlf][crlf]</div>
-            <a href="#ws" onclick="showTutorial(event,'ws')" style="display:inline-flex;align-items:center;gap:.5rem;color:#d4a843;background:rgba(212,168,67,.1);padding:.7rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:600">Full Guide →</a>
-          </div>
-          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(212,168,67,0.2);border-radius:16px;padding:2rem;transition:all .3s" onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 20px 50px rgba(0,0,0,.4)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
-            <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#d4a843,#f0c75e,#d4a843);border-radius:16px 16px 0 0"></div>
-            <h2 style="font-size:1.4rem;color:#d4a843;margin-bottom:1rem">🔄 Advanced SNI Methods</h2>
-            <p style="color:#8899aa;font-size:.95rem;line-height:1.7;margin-bottom:1.5rem">ClientHello fragmentation, ECH, H3 QUIC, domain fronting, session rotation — the full arsenal.</p>
-            <ul style="color:#8899aa;font-size:.9rem;padding-left:1.2rem;margin-bottom:1.5rem;line-height:2">
-              <li>✅ ClientHello Fragmentation (split TLS handshake)</li>
-              <li>✅ ECH — Encrypted Client Hello (TLS 1.3)</li>
-              <li>✅ H3 QUIC (UDP 443 bypass)</li>
-              <li>✅ Domain Fronting (CDN SNI mismatch)</li>
-              <li>✅ Multi-SNI Rotation + Session Tickets</li>
-            </ul>
-            <a href="#advanced" onclick="showTutorial(event,'advanced')" style="display:inline-flex;align-items:center;gap:.5rem;color:#d4a843;background:rgba(212,168,67,.1);padding:.7rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:600">View All Methods →</a>
-          </div>
-          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(212,168,67,0.2);border-radius:16px;padding:2rem;transition:all .3s" onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 20px 50px rgba(0,0,0,.4)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
-            <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#d4a843,#f0c75e,#d4a843);border-radius:16px 16px 0 0"></div>
-            <h2 style="font-size:1.4rem;color:#d4a843;margin-bottom:1rem">📱 Ready-to-Use SNI Configs</h2>
-            <p style="color:#8899aa;font-size:.95rem;line-height:1.7;margin-bottom:1.5rem">Copy-paste HTTP Injector configs. Works on Android &amp; iOS.</p>
-            <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem">
-              <span style="background:rgba(212,168,67,.15);color:#d4a843;padding:.3rem .8rem;border-radius:20px;font-size:.8rem">WhatsApp SNI</span>
-              <span style="background:rgba(212,168,67,.15);color:#d4a843;padding:.3rem .8rem;border-radius:20px;font-size:.8rem">Instagram SNI</span>
-              <span style="background:rgba(212,168,67,.15);color:#d4a843;padding:.3rem .8rem;border-radius:20px;font-size:.8rem">Netflix SNI</span>
-              <span style="background:rgba(212,168,67,.15);color:#d4a843;padding:.3rem .8rem;border-radius:20px;font-size:.8rem">Custom SSH</span>
-              <span style="background:rgba(212,168,67,.15);color:#d4a843;padding:.3rem .8rem;border-radius:20px;font-size:.8rem">WebSocket</span>
-              <span style="background:rgba(212,168,67,.15);color:#d4a843;padding:.3rem .8rem;border-radius:20px;font-size:.8rem">HTTP Injector</span>
-            </div>
-            <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-              <a href="#whatsapp" onclick="showTutorial(event,'whatsapp')" style="color:#d4a843;background:rgba(212,168,67,.1);padding:.4rem .8rem;border-radius:6px;text-decoration:none;font-size:.85rem">WhatsApp</a>
-              <a href="#instagram" onclick="showTutorial(event,'instagram')" style="color:#d4a843;background:rgba(212,168,67,.1);padding:.4rem .8rem;border-radius:6px;text-decoration:none;font-size:.85rem">Instagram</a>
-              <a href="#netflix" onclick="showTutorial(event,'netflix')" style="color:#d4a843;background:rgba(212,168,67,.1);padding:.4rem .8rem;border-radius:6px;text-decoration:none;font-size:.85rem">Netflix</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <div id="tut-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99999;backdrop-filter:blur(10px);align-items:center;justify-content:center" onclick="closeTut(event)">
-      <div style="background:#0f1319;border:1px solid rgba(212,168,67,.3);border-radius:16px;padding:2.5rem;max-width:750px;width:92%;max-height:85vh;overflow-y:auto;position:relative" onclick="event.stopPropagation()">
-        <button onclick="document.getElementById('tut-modal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:#d4a843;font-size:1.5rem;cursor:pointer">✕</button>
-        <div id="tut-content"></div>
-      </div>
-    </div>
-    <script>
-    var tutorials={};
-    tutorials.ssh={title:"🔐 3-7 Day SSH Tunnel Setup",body:"<h2 style='color:#d4a843;margin-bottom:1rem'>SSH Tunnel — Extended Duration</h2><p style='color:#8899aa;line-height:1.8;margin-bottom:1.5rem'>Create a persistent SSH tunnel lasting 3-7 days with auto-reconnect via systemd service.</p><h3 style='color:#f0c75e;margin-bottom:.5rem'>Requirements</h3><ul style='color:#8899aa;margin-bottom:1.5rem'><li>VPS with public IP (DigitalOcean/Vultr free tier)</li><li>SSH + stunnel or sslh for TLS wrapping</li><li>HTTP Injector on Android or Shadowrocket on iOS</li></ul><h3 style='color:#f0c75e;margin-bottom:.5rem'>SSH Config</h3><div style='background:rgba(0,0,0,.4);padding:1rem;border-radius:8px;font-family:monospace;color:#a0c0a0;margin-bottom:1.5rem;font-size:.85rem'>ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=3 -o ExitOnForwardFailure=yes -N -R 8080:localhost:80 -p 443 user@ssh-server.com -f</div><h3 style='color:#f0c75e;margin-bottom:.5rem'>Systemd Service</h3><div style='background:rgba(0,0,0,.4);padding:1rem;border-radius:8px;font-family:monospace;color:#a0c0a0;margin-bottom:1.5rem;font-size:.85rem'>[Unit]<br>Description=SSH Tunnel<br>After=network.target<br><br>[Service]<br>ExecStart=/usr/bin/ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=3 -N -R 8080:localhost:80 -p 443 user@ssh-server.com -f<br>Restart=always<br>RestartSec=30<br><br>[Install]<br>WantedBy=multi-user.target</div><p style='color:#8899aa'>Enable with: <code style='background:rgba(212,168,67,.1);padding:.2rem .4rem;border-radius:4px;color:#d4a843'>sudo systemctl enable --now ssh-tunnel</code></p>"};
-    tutorials.ws={title:"🌐 WebSocket Tunnel",body:"<h2 style='color:#d4a843;margin-bottom:1rem'>WebSocket Bypass Configuration</h2><p style='color:#8899aa;line-height:1.8;margin-bottom:1.5rem'>WebSocket upgrade headers carry the real target, bypassing most deep packet inspection.</p><div style='background:rgba(0,0,0,.4);padding:1rem;border-radius:8px;font-family:monospace;color:#a0c0a0;margin-bottom:1.5rem;font-size:.85rem'>GET / HTTP/1.1[crlf]Host: secure-websocket.com[crlf]Upgrade: websocket[crlf]Connection: Upgrade[crlf]Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==[crlf][crlf]</div><p style='color:#8899aa'>The SNI in TLS handshake shows a whitelisted domain, but the encrypted WebSocket payload carries your actual traffic.</p>"};
-    tutorials.advanced={title:"🔄 Advanced SNI Methods",body:"<h2 style='color:#d4a843;margin-bottom:1rem'>Advanced Techniques</h2><h3 style='color:#f0c75e;margin:.8rem 0 .4rem'>1. ClientHello Fragmentation</h3><p style='color:#8899aa;margin-bottom:1rem'>Split ClientHello across multiple TCP packets. DPI can't reassemble the SNI.</p><h3 style='color:#f0c75e;margin:.8rem 0 .4rem'>2. Domain Fronting</h3><p style='color:#8899aa;margin-bottom:1rem'>SNI = popular CDN domain. HTTP Host = your actual target. Works on CDNs.</p><h3 style='color:#f0c75e;margin:.8rem 0 .4rem'>3. ECH (Encrypted Client Hello)</h3><p style='color:#8899aa;margin-bottom:1rem'>TLS 1.3 encrypts the SNI entirely. Native in Firefox.</p><h3 style='color:#f0c75e;margin:.8rem 0 .4rem'>4. H3 QUIC</h3><p style='color:#8899aa;margin-bottom:1rem'>HTTP/3 over UDP 443. Different inspection path than TCP TLS.</p><h3 style='color:#f0c75e;margin:.8rem 0 .4rem'>5. Session Resumption</h3><p style='color:#8899aa'>Reuse TLS session tickets — skip full handshake and SNI exposure on reconnect.</p>"};
-    tutorials.whatsapp={title:"� WhatsApp SNI Config",body:"<h2 style='color:#d4a843;margin-bottom:1rem'>WhatsApp Bypass Configuration</h2><p style='color:#8899aa;margin-bottom:1.5rem'>Use this HTTP Injector config to route WhatsApp through SNI bypass tunnel.</p><div style='background:rgba(0,0,0,.4);padding:1rem;border-radius:8px;font-family:monospace;color:#a0c0a0;margin-bottom:1.5rem;font-size:.85rem'>[Header]<br>GET / HTTP/1.1<br>Host: web.whatsapp.com<br>SNI: whatsapp.com<br>Port: 443</div><p style='color:#8899aa'>Works for WhatsApp messages, voice calls, and media sharing.</p>"};
-    tutorials.instagram={title:"� Instagram SNI Config",body:"<h2 style='color:#d4a843;margin-bottom:1rem'>Instagram Bypass</h2><p style='color:#8899aa;margin-bottom:1.5rem'>Instagram uses certificate pinning so bypass is trickier. Use with a VPS hosting to terminate TLS.</p><div style='background:rgba(0,0,0,.4);padding:1rem;border-radius:8px;font-family:monospace;color:#a0c0a0;margin-bottom:1.5rem;font-size:.85rem'>[Header]<br>GET / HTTP/1.1<br>Host: i.instagram.com<br>SNI: instagram.com<br>Port: 443</div>"};
-    tutorials.netflix={title:"🎬 Netflix SNI Config",body:"<h2 style='color:#d4a843;margin-bottom:1rem'>Netflix Bypass</h2><p style='color:#8899aa;margin-bottom:1.5rem'>Netflix uses deep packet inspection. SNI bypass alone may not work — requires VPS with proper TLS termination.</p><div style='background:rgba(0,0,0,.4);padding:1rem;border-radius:8px;font-family:monospace;color:#a0c0a0;margin-bottom:1.5rem;font-size:.85rem'>[Header]<br>GET / HTTP/1.1<br>Host: www.netflix.com<br>SNI: netflix.com<br>Port: 443</div>"};
-    function showTutorial(e,id){e.preventDefault();var t=tutorials[id];if(t){document.getElementById('tut-content').innerHTML="<h2 style='color:#d4a843;margin-bottom:1rem;font-size:1.5rem'>"+t.title+"</h2>"+t.body;document.getElementById('tut-modal').style.display='flex'}}
-    function closeTut(e){if(!e||e.target.id==='tut-modal')document.getElementById('tut-modal').style.display='none'}
-    </script>
+        // Initialize saved configs
+        renderSavedConfigs();
 
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Close mobile nav
+                    document.getElementById('nav-links').classList.remove('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
