@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNI Bypass Config Generator | Microtuff Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0e17;
+            color: #e0e0e0;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            border-bottom: 2px solid #d4a843;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #d4a843;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .logo span {
+            color: #ffffff;
+        }
+
+        .tagline {
+            font-size: 0.95rem;
+            color: #8899aa;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: #8899aa;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #0f1420 0%, #141c2b 100%);
+            border: 1px solid #1e2a3a;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            color: #d4a843;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #1e2a3a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: #d4a843;
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            color: #aabbcc;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        select, input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px 16px;
+            background: #0a0e17;
+            border: 1px solid #2a3a4a;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        select:focus, input[type="text"]:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: #d4a843;
+            box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.15);
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23d4a843' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .custom-fields {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #1e2a3a;
+        }
+
+        .custom-fields.active {
+            display: block;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d4a843 0%, #b8922e 100%);
+            color: #0a0e17;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 168, 67, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #d4a843;
+            border: 1px solid #d4a843;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(212, 168, 67, 0.1);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #1a8a5a 0%, #0d6b42 100%);
+            color: #ffffff;
+            width: 100%;
+            display: none;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 138, 90, 0.3);
+        }
+
+        .btn-download.visible {
+            display: inline-flex;
+        }
+
+        .payload-preview {
+            background: #060a12;
+            border: 1px solid #1e2a3a;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #7acc9a;
+            white-space: pre-wrap;
+            word-break: break-all;
+            display: none;
+        }
+
+        .payload-preview.visible {
+            display: block;
+        }
+
+        .info-box {
+            background: rgba(212, 168, 67, 0.08);
+            border: 1px solid rgba(212, 168, 67, 0.25);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .info-box h3 {
+            color: #d4a843;
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+
+        .info-box ol, .info-box ul {
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .info-box li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #c0c8d0;
+        }
+
+        .info-box code {
+            background: #0a0e17;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #d4a843;
+            font-size: 0.85rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-flow {
+            background: rgba(0, 150, 255, 0.15);
+            color: #4db8ff;
+            border: 1px solid rgba(0, 150, 255, 0.3);
+        }
+
+        .badge-digicel {
+            background: rgba(255, 50, 50, 0.15);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 50, 50, 0.3);
+        }
+
+        .carrier-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: #8899aa;
+            display: none;
+        }
+
+        .carrier-info.active {
+            display: block;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid #1e2a3a;
+            margin-top: 40px;
+            color: #556677;
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: #d4a843;
+            text-decoration: none;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1a8a5a;
+            color: #ffffff;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s;
+        }
+
+        .toast.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #2a3a4a, transparent);
+            margin: 30px 0;
+        }
+
+        .highlight {
+            color: #d4a843;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">MICRO<span>TUFF</span></div>
+            <div class="tagline">Solutions — Connectivity Tools for the Caribbean</div>
+        </header>
+
+        <h1 class="page-title">SNI Bypass Config Generator</h1>
+        <p class="page-subtitle">Generate HTTP Injector .ehi configuration files for Jamaican carriers</p>
+
+        <div class="card">
+            <div class="card-title">Configuration</div>
+            
+            <div class="form-group">
+                <label for="carrier">Carrier</label>
+                <select id="carrier" onchange="updateCarrierInfo()">
+                    <option value="">— Select Carrier —</option>
+                    <option value="flow">Flow Jamaica</option>
+                    <option value="digicel">Digicel Jamaica</option>
+                </select>
+                <div id="carrier-info" class="carrier-info"></div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="target-host">Target Host</label>
+                    <select id="target-host" onchange="updateTargetCustom()">
+                        <option value="">— Select Target —</option>
+                        <option value="moh">Ministry of Health (moh.gov.jm)</option>
+                        <option value="mof">Ministry of Finance (mof.gov.jm)</option>
+                        <option value="utech">UTECH Jamaica (utech.edu.jm)</option>
+                        <option value="custom">Custom Host...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="bug-host">Bug Host (SNI)</label>
+                    <select id="bug-host" onchange="updateBugCustom()">
+                        <option value="">— Select Bug Host —</option>
+                        <option value="dredgeflow">dredgeflow.com (Default)</option>
+                        <option value="custom">Custom Bug Host...</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="custom-target-fields" class="custom-fields">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="custom-target-host">Custom Target Host</label>
+                        <input type="text" id="custom-target-host" placeholder="e.g., www.example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="custom-target-ip">Target IP Address</label>
+                        <input type="text" id="custom-target-ip" placeholder="e.g., 104.24.103.82">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="custom-target-port">Port</label>
+                        <input type="number" id="custom-target-port" value="443" placeholder="443">
+                    </div>
+                    <div class="form-group">
+                        <label for="custom-target-sni">SNI Name</label>
+                        <input type="text" id="custom-target-sni" placeholder="e.g., www.example.com">
+                    </div>
+                </div>
+            </div>
+
+            <div id="custom-bug-fields" class="custom-fields">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="custom-bug-host">Custom Bug Host</label>
+                        <input type="text" id="custom-bug-host" placeholder="e.g., example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="custom-bug-ip">Bug IP Address</label>
+                        <input type="text" id="custom-bug-ip" placeholder="e.g., 162.159.135.42">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="custom-bug-port">Bug Port</label>
+                        <input type="number" id="custom-bug-port" value="443" placeholder="443">
+                    </div>
+                    <div class="form-group">
+                        <label for="custom-bug-sni">Bug SNI</label>
+                        <input type="text" id="custom-bug-sni" placeholder="e.g., example.com">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="config-name">Config Name (optional)</label>
+                <input type="text" id="config-name" placeholder="e.g., Flow_MOH_Bypass">
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Payload Preview</div>
+            <div id="payload-preview" class="payload-preview"></div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-primary" onclick="generateConfig()">
+                    ⚡ Generate .ehi Config
+                </button>
+            </div>
+            <div style="text-align: center; margin-top: 15px;">
+                <button id="download-btn" class="btn btn-download" onclick="downloadConfig()">
+                    📥 Download .ehi File
+                </button>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="card">
+            <div class="card-title">Installation Instructions — HTTP Injector</div>
+            <div class="info-box">
+                <h3>How to Import .ehi Config Files</h3>
+                <ol>
+                    <li>Download and install <strong>HTTP Injector</strong> from the Google Play Store or a trusted APK source.</li>
+                    <li>Open HTTP Injector on your device.</li>
+                    <li>Tap the <strong>Menu</strong> (three dots) in the top-right corner.</li>
+                    <li>Select <strong>Import Config</strong> or <strong>Settings → Config → Import</strong>.</li>
+                    <li>Navigate to your Downloads folder and select the <code>.ehi</code> file.</li>
+                    <li>The config will appear in your config list. Tap it to activate.</li>
+                    <li>Press <strong>Start</strong> to establish the VPN connection.</li>
+                </ol>
+                <h3 style="margin-top: 15px;">Troubleshooting Tips</h3>
+                <ul>
+                    <li>Ensure your mobile data is connected (WiFi may block VPN tunnels).</li>
+                    <li>If connection fails, try toggling airplane mode or switching between Flow/Digicel APN.</li>
+                    <li>Some configs may require specific APN settings — check carrier recommendations.</li>
+                    <li>HTTP Injector requires Android 4.1+ or a compatible Android device.</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 <a href="#">Microtuff Solutions</a> — All rights reserved.</p>
+            <p style="margin-top: 5px;">SNI Bypass Tools for the Caribbean Region</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Predefined payload configurations
+        const TARGETS = {
+            moh: {
+                name: 'Ministry of Health Jamaica',
+                host: 'www.moh.gov.jm',
+                ip: '104.24.103.82',
+                port: 443,
+                sni: 'www.moh.gov.jm'
+            },
+            mof: {
+                name: 'Ministry of Finance Jamaica',
+                host: 'www.mof.gov.jm',
+                ip: '172.67.182.22',
+                port: 443,
+                sni: 'www.mof.gov.jm'
+            },
+            utech: {
+                name: 'UTECH Jamaica',
+                host: 'www.utech.edu.jm',
+                ip: '104.21.45.100',
+                port: 443,
+                sni: 'www.utech.edu.jm'
+            }
+        };
+
+        const BUG_HOSTS = {
+            dredgeflow: {
+                name: 'dredgeflow.com',
+                host: 'dredgeflow.com',
+                ip: '162.159.135.42',
+                port: 443,
+                sni: 'dredgeflow.com'
+            }
+        };
+
+        const CARRIERS = {
+            flow: {
+                name: 'Flow Jamaica',
+                apn: 'internet',
+                dns: '8.8.8.8',
+                info: 'APN: internet | DNS: 8.8.8.8 | Flow uses standard HTTP/3 tunneling. Works with most SNI bypass payloads.'
+            },
+            digicel: {
+                name: 'Digicel Jamaica',
+                apn: 'digicel',
+                dns: '8.8.4.4',
+                info: 'APN: digicel | DNS: 8.8.4.4 | Digicel may require WebSocket upgrade headers for proper tunneling.'
+            }
+        };
+
+        let generatedPayload = '';
+        let generatedFilename = '';
+
+        function updateCarrierInfo() {
+            const carrier = document.getElementById('carrier').value;
+            const infoDiv = document.getElementById('carrier-info');
+            
+            if (carrier && CARRIERS[carrier]) {
+                const badgeClass = carrier === 'flow' ? 'badge-flow' : 'badge-digicel';
+                infoDiv.innerHTML = `
+                    <span class="badge ${badgeClass}">${CARRIERS[carrier].name}</span>
+                    <p style="margin-top: 8px;">${CARRIERS[carrier].info}</p>
+                `;
+                infoDiv.classList.add('active');
+            } else {
+                infoDiv.classList.remove('active');
+            }
+        }
+
+        function updateTargetCustom() {
+            const target = document.getElementById('target-host').value;
+            const customFields = document.getElementById('custom-target-fields');
+            
+            if (target === 'custom') {
+                customFields.classList.add('active');
+            } else {
+                customFields.classList.remove('active');
+            }
+            updatePreview();
+        }
+
+        function updateBugCustom() {
+            const bug = document.getElementById('bug-host').value;
+            const customFields = document.getElementById('custom-bug-fields');
+            
+            if (bug === 'custom') {
+                customFields.classList.add('active');
+            } else {
+                customFields.classList.remove('active');
+            }
+            updatePreview();
+        }
+
+        function getTargetConfig() {
+            const target = document.getElementById('target-host').value;
+            
+            if (target === 'custom') {
+                return {
+                    name: document.getElementById('custom-target-host').value || 'Custom Target',
+                    host: document.getElementById('custom-target-host').value,
+                    ip: document.getElementById('custom-target-ip').value,
+                    port: parseInt(document.getElementById('custom-target-port').value) || 443,
+                    sni: document.getElementById('custom-target-sni').value
+                };
+            }
+            
+            return TARGETS[target] || null;
+        }
+
+        function getBugConfig() {
+            const bug = document.getElementById('bug-host').value;
+            
+            if (bug === 'custom') {
+                return {
+                    name: document.getElementById('custom-bug-host').value || 'Custom Bug Host',
+                    host: document.getElementById('custom-bug-host').value,
+                    ip: document.getElementById('custom-bug-ip').value,
+                    port: parseInt(document.getElementById('custom-bug-port').value) || 443,
+                    sni: document.getElementById('custom-bug-sni').value
+                };
+            }
+            
+            return BUG_HOSTS[bug] || null;
+        }
+
+        function generatePayload(target, bug, carrier) {
+            // .ehi format: HTTP Injector config
+            // Format: GET / HTTP/1.1[crlf]Host: TARGET[crlf]Upgrade: websocket[crlf]Connection: Upgrade[crlf][crlf]
+            // With SNI/bug host routing
+            
+            const crlf = '\r\n';
+            const carrierInfo = CARRIERS[carrier];
+            
+            let payload = `GET / HTTP/1.1${crlf}`;
+            payload += `Host: ${target.host}${crlf}`;
+            payload += `Upgrade: websocket${crlf}`;
+            payload += `Connection: Upgrade${crlf}`;
+            payload += `X-Online-Host: ${target.host}${crlf}`;
+            payload += `X-Forward-For: ${bug.ip}${crlf}`;
+            payload += `${crlf}`;
+            
+            return payload;
+        }
+
+        function generateFullConfig(target, bug, carrier) {
+            const carrierInfo = CARRIERS[carrier];
+            const timestamp = new Date().toISOString().split('T')[0];
+            
+            let config = `# SNI Bypass Configuration\n`;
+            config += `# Generated by Microtuff Solutions\n`;
+            config += `# Date: ${timestamp}\n`;
+            config += `# Carrier: ${carrierInfo.name}\n`;
+            config += `# Target: ${target.name}\n`;
+            config += `# Bug Host: ${bug.name}\n`;
+            config += `#\n`;
+            config += `# === Connection Settings ===\n`;
+            config += `carrier=${carrier}\n`;
+            config += `apn=${carrierInfo.apn}\n`;
+            config += `dns=${carrierInfo.dns}\n`;
+            config += `#\n`;
+            config += `# === Target Server ===\n`;
+            config += `target_host=${target.host}\n`;
+            config += `target_ip=${target.ip}\n`;
+            config += `target_port=${target.port}\n`;
+            config += `target_sni=${target.sni}\n`;
+            config += `#\n`;
+            config += `# === Bug Host (SNI) ===\n`;
+            config += `bug_host=${bug.host}\n`;
+            config += `bug_ip=${bug.ip}\n`;
+            config += `bug_port=${bug.port}\n`;
+            config += `bug_sni=${bug.sni}\n`;
+            config += `#\n`;
+            config += `# === HTTP Injector Payload ===\n`;
+            
+            const crlf = '\r\n';
+            let payload = `GET / HTTP/1.1${crlf}`;
+            payload += `Host: ${target.host}${crlf}`;
+            payload += `Upgrade: websocket${crlf}`;
+            payload += `Connection: Upgrade${crlf}`;
+            payload += `${crlf}`;
+            
+            config += `payload=${encodeURIComponent(payload)}\n`;
+            config += `#\n`;
+            config += `# === Raw Payload (for manual use) ===\n`;
+            config += `# GET / HTTP/1.1\r\n`;
+            config += `# Host: ${target.host}\r\n`;
+            config += `# Upgrade: websocket\r\n`;
+            config += `# Connection: Upgrade\r\n`;
+            config += `# \r\n`;
+            config += `# Connect to: ${bug.ip}:${bug.port} (SNI: ${bug.sni})\n`;
+            
+            return config;
+        }
+
+        function updatePreview() {
+            const target = getTargetConfig();
+            const bug = getBugConfig();
+            const carrier = document.getElementById('carrier').value;
+            const preview = document.getElementById('payload-preview');
+            
+            if (target && bug && carrier) {
+                const config = generateFullConfig(target, bug, carrier);
+                preview.textContent = config;
+                preview.classList.add('visible');
+            } else {
+                preview.classList.remove('visible');
+            }
+        }
+
+        function generateConfig() {
+            const carrier = document.getElementById('carrier').value;
+            const target = getTargetConfig();
+            const bug = getBugConfig();
+            
+            if (!carrier) {
+                showToast('⚠️ Please select a carrier');
+                return;
+            }
+            if (!target || !target.host || !target.ip) {
+                showToast('⚠️ Please configure the target host');
+                return;
+            }
+            if (!bug || !bug.host || !bug.ip) {
+                showToast('⚠️ Please configure the bug host');
+                return;
+            }
+            
+            const configName = document.getElementById('config-name').value || 
+                              `${carrier.toUpperCase()}_${target.host.replace(/\./g, '_')}`;
+            generatedFilename = `${configName}.ehi`;
+            generatedPayload = generateFullConfig(target, bug, carrier);
+            
+            document.getElementById('download-btn').classList.add('visible');
+            showToast('✅ Config generated successfully!');
+            
+            // Update preview
+            const preview = document.getElementById('payload-preview');
+            preview.textContent = generatedPayload;
+            preview.classList.add('visible');
+        }
+
+        function downloadConfig() {
+            if (!generatedPayload) {
+                showToast('⚠️ Generate a config first');
+                return;
+            }
+            
+            const blob = new Blob([generatedPayload], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = generatedFilename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast(`📥 Downloaded: ${generatedFilename}`);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('visible');
+            setTimeout(() => {
+                toast.classList.remove('visible');
+            }, 3000);
+        }
+
+        // Live preview updates
+        document.getElementById('target-host').addEventListener('change', updatePreview);
+        document.getElementById('bug-host').addEventListener('change', updatePreview);
+        document.getElementById('carrier').addEventListener('change', updatePreview);
+        
+        // Update preview on custom field changes
+        ['custom-target-host', 'custom-target-ip', 'custom-target-port', 'custom-target-sni',
+         'custom-bug-host', 'custom-bug-ip', 'custom-bug-port', 'custom-bug-sni'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updatePreview);
+        });
+    </script>
+</body>
+</html>
