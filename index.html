@@ -769,5 +769,78 @@
             document.getElementById(id).addEventListener('input', updatePreview);
         });
     </script>
+
+    <!-- TUTORIAL SECTION -->
+    <section id="tutorials" style="padding:5rem 2rem;background:linear-gradient(180deg,transparent,rgba(212,168,67,0.03),transparent)">
+      <div style="max-width:1200px;margin:0 auto">
+        <h1 style="font-size:2.5rem;color:#d4a843;text-align:center;margin-bottom:1remfont-weight:700">� Setup Tutorials &amp; Advanced SNI Configs</h1>
+        <p style="text-align:center;color:#8899aa;font-size:1.1rem;margin-bottom:3rem">Step-by-step guides for SSH tunnels, WebSocket connections, domain fronting, and ready-to-use SNI configurations.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:2rem">
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(212,168,67,0.2);border-radius:16px;padding:2rem;transition:all .3s" onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 20px 50px rgba(0,0,0,.4)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
+            <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#d4a843,#f0c75e,#d4a843);border-radius:16px 16px 0 0"></div>
+            <h2 style="font-size:1.4rem;color:#d4a843;margin-bottom:1rem">🔐 3-7 Day SSH Tunnel</h2>
+            <p style="color:#8899aa;font-size:.95rem;line-height:1.7;margin-bottom:1.5rem">Create persistent SSH tunnels with auto-reconnect. Rotate keys for extended duration.</p>
+            <div style="background:rgba(0,0,0,.4);padding:1rem;border-radius:8px;font-family:monospace;font-size:.85rem;color:#a0c0a0;margin-bottom:1.5rem;overflow-x:auto">ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=3 -R 8080:localhost:80 user@ssh-server.com -p 443 -N -f</div>
+            <a href="#ssh" onclick="showTutorial(event,'ssh')" style="display:inline-flex;align-items:center;gap:.5rem;color:#d4a843;background:rgba(212,168,67,.1);padding:.7rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:600">Full Guide →</a>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(212,168,67,0.2);border-radius:16px;padding:2rem;transition:all .3s" onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 20px 50px rgba(0,0,0,.4)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
+            <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#d4a843,#f0c75e,#d4a843);border-radius:16px 16px 0 0"></div>
+            <h2 style="font-size:1.4rem;color:#d4a843;margin-bottom:1rem">🌐 WebSocket Tunnel</h2>
+            <p style="color:#8899aa;font-size:.95rem;line-height:1.7;margin-bottom:1.5rem">Upgrade HTTP to persistent WebSocket streams. Bypass DPI inspection with encrypted upgrade headers.</p>
+            <div style="background:rgba(0,0,0,.4);padding:1rem;border-radius:8px;font-family:monospace;font-size:.85rem;color:#a0c0a0;margin-bottom:1.5rem;overflow-x:auto">GET / HTTP/1.1[crlf]Host: target.com[crlf]Upgrade: websocket[crlf]Connection: Upgrade[crlf][crlf]</div>
+            <a href="#ws" onclick="showTutorial(event,'ws')" style="display:inline-flex;align-items:center;gap:.5rem;color:#d4a843;background:rgba(212,168,67,.1);padding:.7rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:600">Full Guide →</a>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(212,168,67,0.2);border-radius:16px;padding:2rem;transition:all .3s" onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 20px 50px rgba(0,0,0,.4)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
+            <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#d4a843,#f0c75e,#d4a843);border-radius:16px 16px 0 0"></div>
+            <h2 style="font-size:1.4rem;color:#d4a843;margin-bottom:1rem">🔄 Advanced SNI Methods</h2>
+            <p style="color:#8899aa;font-size:.95rem;line-height:1.7;margin-bottom:1.5rem">ClientHello fragmentation, ECH, H3 QUIC, domain fronting, session rotation — the full arsenal.</p>
+            <ul style="color:#8899aa;font-size:.9rem;padding-left:1.2rem;margin-bottom:1.5rem;line-height:2">
+              <li>✅ ClientHello Fragmentation (split TLS handshake)</li>
+              <li>✅ ECH — Encrypted Client Hello (TLS 1.3)</li>
+              <li>✅ H3 QUIC (UDP 443 bypass)</li>
+              <li>✅ Domain Fronting (CDN SNI mismatch)</li>
+              <li>✅ Multi-SNI Rotation + Session Tickets</li>
+            </ul>
+            <a href="#advanced" onclick="showTutorial(event,'advanced')" style="display:inline-flex;align-items:center;gap:.5rem;color:#d4a843;background:rgba(212,168,67,.1);padding:.7rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:600">View All Methods →</a>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(212,168,67,0.2);border-radius:16px;padding:2rem;transition:all .3s" onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 20px 50px rgba(0,0,0,.4)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
+            <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#d4a843,#f0c75e,#d4a843);border-radius:16px 16px 0 0"></div>
+            <h2 style="font-size:1.4rem;color:#d4a843;margin-bottom:1rem">📱 Ready-to-Use SNI Configs</h2>
+            <p style="color:#8899aa;font-size:.95rem;line-height:1.7;margin-bottom:1.5rem">Copy-paste HTTP Injector configs. Works on Android &amp; iOS.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem">
+              <span style="background:rgba(212,168,67,.15);color:#d4a843;padding:.3rem .8rem;border-radius:20px;font-size:.8rem">WhatsApp SNI</span>
+              <span style="background:rgba(212,168,67,.15);color:#d4a843;padding:.3rem .8rem;border-radius:20px;font-size:.8rem">Instagram SNI</span>
+              <span style="background:rgba(212,168,67,.15);color:#d4a843;padding:.3rem .8rem;border-radius:20px;font-size:.8rem">Netflix SNI</span>
+              <span style="background:rgba(212,168,67,.15);color:#d4a843;padding:.3rem .8rem;border-radius:20px;font-size:.8rem">Custom SSH</span>
+              <span style="background:rgba(212,168,67,.15);color:#d4a843;padding:.3rem .8rem;border-radius:20px;font-size:.8rem">WebSocket</span>
+              <span style="background:rgba(212,168,67,.15);color:#d4a843;padding:.3rem .8rem;border-radius:20px;font-size:.8rem">HTTP Injector</span>
+            </div>
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+              <a href="#whatsapp" onclick="showTutorial(event,'whatsapp')" style="color:#d4a843;background:rgba(212,168,67,.1);padding:.4rem .8rem;border-radius:6px;text-decoration:none;font-size:.85rem">WhatsApp</a>
+              <a href="#instagram" onclick="showTutorial(event,'instagram')" style="color:#d4a843;background:rgba(212,168,67,.1);padding:.4rem .8rem;border-radius:6px;text-decoration:none;font-size:.85rem">Instagram</a>
+              <a href="#netflix" onclick="showTutorial(event,'netflix')" style="color:#d4a843;background:rgba(212,168,67,.1);padding:.4rem .8rem;border-radius:6px;text-decoration:none;font-size:.85rem">Netflix</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div id="tut-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99999;backdrop-filter:blur(10px);align-items:center;justify-content:center" onclick="closeTut(event)">
+      <div style="background:#0f1319;border:1px solid rgba(212,168,67,.3);border-radius:16px;padding:2.5rem;max-width:750px;width:92%;max-height:85vh;overflow-y:auto;position:relative" onclick="event.stopPropagation()">
+        <button onclick="document.getElementById('tut-modal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:#d4a843;font-size:1.5rem;cursor:pointer">✕</button>
+        <div id="tut-content"></div>
+      </div>
+    </div>
+    <script>
+    var tutorials={};
+    tutorials.ssh={title:"🔐 3-7 Day SSH Tunnel Setup",body:"<h2 style='color:#d4a843;margin-bottom:1rem'>SSH Tunnel — Extended Duration</h2><p style='color:#8899aa;line-height:1.8;margin-bottom:1.5rem'>Create a persistent SSH tunnel lasting 3-7 days with auto-reconnect via systemd service.</p><h3 style='color:#f0c75e;margin-bottom:.5rem'>Requirements</h3><ul style='color:#8899aa;margin-bottom:1.5rem'><li>VPS with public IP (DigitalOcean/Vultr free tier)</li><li>SSH + stunnel or sslh for TLS wrapping</li><li>HTTP Injector on Android or Shadowrocket on iOS</li></ul><h3 style='color:#f0c75e;margin-bottom:.5rem'>SSH Config</h3><div style='background:rgba(0,0,0,.4);padding:1rem;border-radius:8px;font-family:monospace;color:#a0c0a0;margin-bottom:1.5rem;font-size:.85rem'>ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=3 -o ExitOnForwardFailure=yes -N -R 8080:localhost:80 -p 443 user@ssh-server.com -f</div><h3 style='color:#f0c75e;margin-bottom:.5rem'>Systemd Service</h3><div style='background:rgba(0,0,0,.4);padding:1rem;border-radius:8px;font-family:monospace;color:#a0c0a0;margin-bottom:1.5rem;font-size:.85rem'>[Unit]<br>Description=SSH Tunnel<br>After=network.target<br><br>[Service]<br>ExecStart=/usr/bin/ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=3 -N -R 8080:localhost:80 -p 443 user@ssh-server.com -f<br>Restart=always<br>RestartSec=30<br><br>[Install]<br>WantedBy=multi-user.target</div><p style='color:#8899aa'>Enable with: <code style='background:rgba(212,168,67,.1);padding:.2rem .4rem;border-radius:4px;color:#d4a843'>sudo systemctl enable --now ssh-tunnel</code></p>"};
+    tutorials.ws={title:"🌐 WebSocket Tunnel",body:"<h2 style='color:#d4a843;margin-bottom:1rem'>WebSocket Bypass Configuration</h2><p style='color:#8899aa;line-height:1.8;margin-bottom:1.5rem'>WebSocket upgrade headers carry the real target, bypassing most deep packet inspection.</p><div style='background:rgba(0,0,0,.4);padding:1rem;border-radius:8px;font-family:monospace;color:#a0c0a0;margin-bottom:1.5rem;font-size:.85rem'>GET / HTTP/1.1[crlf]Host: secure-websocket.com[crlf]Upgrade: websocket[crlf]Connection: Upgrade[crlf]Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==[crlf][crlf]</div><p style='color:#8899aa'>The SNI in TLS handshake shows a whitelisted domain, but the encrypted WebSocket payload carries your actual traffic.</p>"};
+    tutorials.advanced={title:"🔄 Advanced SNI Methods",body:"<h2 style='color:#d4a843;margin-bottom:1rem'>Advanced Techniques</h2><h3 style='color:#f0c75e;margin:.8rem 0 .4rem'>1. ClientHello Fragmentation</h3><p style='color:#8899aa;margin-bottom:1rem'>Split ClientHello across multiple TCP packets. DPI can't reassemble the SNI.</p><h3 style='color:#f0c75e;margin:.8rem 0 .4rem'>2. Domain Fronting</h3><p style='color:#8899aa;margin-bottom:1rem'>SNI = popular CDN domain. HTTP Host = your actual target. Works on CDNs.</p><h3 style='color:#f0c75e;margin:.8rem 0 .4rem'>3. ECH (Encrypted Client Hello)</h3><p style='color:#8899aa;margin-bottom:1rem'>TLS 1.3 encrypts the SNI entirely. Native in Firefox.</p><h3 style='color:#f0c75e;margin:.8rem 0 .4rem'>4. H3 QUIC</h3><p style='color:#8899aa;margin-bottom:1rem'>HTTP/3 over UDP 443. Different inspection path than TCP TLS.</p><h3 style='color:#f0c75e;margin:.8rem 0 .4rem'>5. Session Resumption</h3><p style='color:#8899aa'>Reuse TLS session tickets — skip full handshake and SNI exposure on reconnect.</p>"};
+    tutorials.whatsapp={title:"� WhatsApp SNI Config",body:"<h2 style='color:#d4a843;margin-bottom:1rem'>WhatsApp Bypass Configuration</h2><p style='color:#8899aa;margin-bottom:1.5rem'>Use this HTTP Injector config to route WhatsApp through SNI bypass tunnel.</p><div style='background:rgba(0,0,0,.4);padding:1rem;border-radius:8px;font-family:monospace;color:#a0c0a0;margin-bottom:1.5rem;font-size:.85rem'>[Header]<br>GET / HTTP/1.1<br>Host: web.whatsapp.com<br>SNI: whatsapp.com<br>Port: 443</div><p style='color:#8899aa'>Works for WhatsApp messages, voice calls, and media sharing.</p>"};
+    tutorials.instagram={title:"� Instagram SNI Config",body:"<h2 style='color:#d4a843;margin-bottom:1rem'>Instagram Bypass</h2><p style='color:#8899aa;margin-bottom:1.5rem'>Instagram uses certificate pinning so bypass is trickier. Use with a VPS hosting to terminate TLS.</p><div style='background:rgba(0,0,0,.4);padding:1rem;border-radius:8px;font-family:monospace;color:#a0c0a0;margin-bottom:1.5rem;font-size:.85rem'>[Header]<br>GET / HTTP/1.1<br>Host: i.instagram.com<br>SNI: instagram.com<br>Port: 443</div>"};
+    tutorials.netflix={title:"🎬 Netflix SNI Config",body:"<h2 style='color:#d4a843;margin-bottom:1rem'>Netflix Bypass</h2><p style='color:#8899aa;margin-bottom:1.5rem'>Netflix uses deep packet inspection. SNI bypass alone may not work — requires VPS with proper TLS termination.</p><div style='background:rgba(0,0,0,.4);padding:1rem;border-radius:8px;font-family:monospace;color:#a0c0a0;margin-bottom:1.5rem;font-size:.85rem'>[Header]<br>GET / HTTP/1.1<br>Host: www.netflix.com<br>SNI: netflix.com<br>Port: 443</div>"};
+    function showTutorial(e,id){e.preventDefault();var t=tutorials[id];if(t){document.getElementById('tut-content').innerHTML="<h2 style='color:#d4a843;margin-bottom:1rem;font-size:1.5rem'>"+t.title+"</h2>"+t.body;document.getElementById('tut-modal').style.display='flex'}}
+    function closeTut(e){if(!e||e.target.id==='tut-modal')document.getElementById('tut-modal').style.display='none'}
+    </script>
+
 </body>
 </html>
